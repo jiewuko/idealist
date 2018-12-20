@@ -38,7 +38,7 @@ class ExcelItemExporter(BaseItemExporter):
         self._worksheet.append(values)
 
     def finish_exporting(self):
-        self._workbook.save(key_word.replace(' ', '_') + '_' + self._filename)
+        self._workbook.save(self._filename)
 
     def serialize_field(self, field, name, value):
         serializer = field.get('serializer', self._join_if_needed)

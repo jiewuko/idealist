@@ -38,7 +38,11 @@ class Idealist(scrapy.Spider):
     allowed_domains = ['idealist.org']
 
     def start_requests(self):
-        resp = requests.post(url=url_for_start_request, data=params_for_request)
+        resp = None
+        try:
+            resp = requests.post(url=url_for_start_request, data=params_for_request)
+        except Exception:
+            self.start_requests()
         data = [url for url in resp.json()['hits']]
         for data_for_request in data:
             url = 'https://www.idealist.org/data/website/jobs/' + data_for_request['objectID']
@@ -46,6 +50,7 @@ class Idealist(scrapy.Spider):
                 url=url,
                 callback=self.parse
             )
+
 
     def parse(self, response):
         resp = json.loads(response.body_as_unicode())
