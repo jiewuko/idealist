@@ -85,7 +85,13 @@ class Idealist(scrapy.Spider):
         date = resp.get('job', {}).get('firstPublished', '')
         date_posted = datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%fZ') if date else ''
         job_description_data = resp.get('job', {}).get('description', '')
-        job_description = ' '.join(re.sub("<.*?>", "", job_description_data).split()) if job_description_data else ''
+
+        job_description_data_with_new_line = job_description_data.replace('<br>', '\n') if job_description_data else ''
+
+        job_description = re.sub("<.*?>", "",
+                                 job_description_data_with_new_line) if job_description_data_with_new_line else ''
+
+
         how_to_apply_data = resp.get('job', {}).get('applyText', '')
         how_to_apply = ' '.join(re.sub("<.*?>", "", how_to_apply_data).split()) if how_to_apply_data else ''
 
