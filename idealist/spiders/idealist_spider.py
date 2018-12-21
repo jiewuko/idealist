@@ -7,7 +7,6 @@ import requests
 from scrapy.utils.project import get_project_settings
 from ..items import IdealistItems
 
-
 project_settings = get_project_settings()
 key_word = project_settings.get('KEYWORD')
 
@@ -51,7 +50,6 @@ class Idealist(scrapy.Spider):
                 callback=self.parse
             )
 
-
     def parse(self, response):
         resp = json.loads(response.body_as_unicode())
         line1 = resp.get('job', {}).get('address', {}).get('line1', {})
@@ -85,13 +83,9 @@ class Idealist(scrapy.Spider):
         date = resp.get('job', {}).get('firstPublished', '')
         date_posted = datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%fZ') if date else ''
         job_description_data = resp.get('job', {}).get('description', '')
-
         job_description_data_with_new_line = job_description_data.replace('<br>', '\n') if job_description_data else ''
-
         job_description = re.sub("<.*?>", "",
                                  job_description_data_with_new_line) if job_description_data_with_new_line else ''
-
-
         how_to_apply_data = resp.get('job', {}).get('applyText', '')
         how_to_apply = ' '.join(re.sub("<.*?>", "", how_to_apply_data).split()) if how_to_apply_data else ''
 
