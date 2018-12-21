@@ -116,4 +116,4 @@ FIELDS_TO_EXPORT = [
 
 LOG_LEVEL = 'INFO'
 
-KEYWORD = 'bookkeeping assistant'
+KEYWORD = 'accountant'
